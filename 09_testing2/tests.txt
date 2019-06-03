@@ -1,0 +1,63 @@
+   
+abcde fghij
+abcde ffghi
+abcde fffgh
+abcde ffffg
+abcde fffff
+
+aabcd fghij
+aabcd ffghi
+aabcd fffgh
+aabcd ffffg
+aabcd fffff
+
+aaabc fghij
+aaabc ffghi
+aaabc fffgh
+aaabc ffffg
+aaabc fffff
+
+aaaab fghij
+aaaab ffghi
+aaaab fffgh
+aaaab ffffg
+aaaab fffff
+  
+aaaaa fghij
+aaaaa ffghi
+aaaaa fffgh
+aaaaa ffffg
+aaaaa fffff
+
+aaaaa
+a a
+a b c
+abcdef aaaaa
+abcdd abbcd
+aabbc aabcd
+a ab
+a abc
+a abcd
+a abcde
+ab a
+ab ab
+ab abc
+ab abcd
+ab abcde
+abc a
+abc ab
+abc abc
+abc abcd
+abc abcde
+abcd a
+abcd ab
+abcd abc
+abcd abcd
+abcd abcde
+abcde a
+abcde ab
+abcde abc
+abcde abcd
+abcde abcde
+abcde f 
+aaaaa aaaaaa
