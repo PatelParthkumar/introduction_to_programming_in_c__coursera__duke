@@ -1,0 +1,36 @@
+// straighs
+As Kh Qd 2s 3s 4s 5s; As 2s 3s 4s 5s Kh Qd
+0h 9s 8d 7c 6h Ah Qh; Qh Ah 7c 0h 9s 8d 6h
+2c 3d 4h 5s 6c 6h 6s; Qh Ah 7c 0h 9s 8d 6h
+2c 3d 4h 5s 6c 6h 5s; Qh Ah 7c 0h 9s 8d 6h
+
+// two pairs
+2c 2h 5d 5s As Kh Jc; Jc Kh As 5s 2c 5d 2h
+2c 2h 5d 5s Ks Qh Jc; 2c 2h 5d 5h Jc Ks Kh
+
+// straigh-flush error
+Kh Qh Jh 0s 9s 8h 7h; Kh Qh Jh 0s 9s 8h 7h
+
+// pair
+7d Qh Ks 7h Ah 3c 4s; 7d Qh Ks 7h Ah 3c 4s
+
+// three of a kind
+2c 3d 3h Kd Jh 0d 3s; 2c 3d 3h Kd Jh 0d 3s
+
+// flush
+0d Kh Qh Js 0h 5h 6h; 0d Kh Qh Js 0h 5h 6h
+Ad Qd Jd 9d 7d 2h 6s; 6s Ad Qd Jd 9d 7d 2h
+
+// four of a kind
+Kh Kc Ks Kd Qh Jc 0s; 0s Jc Qh Kc Ks Kd Kh
+
+// full house
+Kh Ks Kd Ah As 7d 6d; Ac Kh Kd Ks As 7d 4d
+
+// straight flush
+Ad Kd Qd Jd 0d 7s 6h; 6h 7s Kd Qd Jd 0d Ad
+Ad 2d 3d 4d 5d 5h 5s; 5s Ad 2d 3d 4d 5d 5h
+
+// single value
+As Ks Qs Js 0s Ad Kd; Ac Kc Qc Jc 0c Ah Kh
+
