@@ -33,7 +33,7 @@ int main(void) {
   all_passed *= do_test(testvec4, 5, 3);
   int testvec5[] = {0, 0, 1, 1};
   all_passed *= do_test(testvec5, 4, 2);
-  
+
   // check if all_passed is true
   if (all_passed == 1) {
     printf("All tests passed sucessfully\n");
