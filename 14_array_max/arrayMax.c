@@ -1,8 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int * arrayMax(int * array, int n) {
-  return NULL;
+int *arrayMax(int * array, int n) {
+  // return NULL if empty array
+  int *ret_p = NULL;
+  if (n > 0) {
+    size_t imax = 0;
+    for (size_t ielm = 1; ielm < n; ielm++) {
+      if (array[ielm] > array[imax]) {
+	imax = ielm;
+      }  // if: value is higher than stored one
+    }  // for: all elements in array
+    ret_p = &array[imax];
+  }  // if: array not empty
+  return ret_p;
 }
 
 void doTest(int * array, int n) {
