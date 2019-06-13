@@ -5,6 +5,7 @@
 // declaration and initialization in one
 void reverse(char *str) {
   // count the number of chars in the string
+  if (str != NULL) {
   int nof_chars = 0;
   while (str[nof_chars] != '\0') {
     nof_chars++;  // final loop will set to actual count since it starts at zero
@@ -21,6 +22,7 @@ void reverse(char *str) {
     revstr[irev] = str[ibw];
   }  // for: all character indices from back to and including 0
   strncpy(str, revstr, nof_chars);
+  }
 }
 
 int main(void) {
