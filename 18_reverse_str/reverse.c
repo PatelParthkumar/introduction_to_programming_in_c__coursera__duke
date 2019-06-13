@@ -2,8 +2,25 @@
 #include <stdlib.h>
 #include <string.h>
 
-void reverse(char * str) {
-  //WRITE ME!
+// declaration and initialization in one
+void reverse(char *str) {
+  // count the number of chars in the string
+  int nof_chars = 0;
+  while (str[nof_chars] != '\0') {
+    nof_chars++;  // final loop will set to actual count since it starts at zero
+  }  // while not encountered \0 char
+
+  // copy str to oldstr
+  char revstr[nof_chars+1];  // +1 to allow for the \0
+  revstr[nof_chars] = '\0';
+  
+  // loop from back to front
+  int irev = 0;
+  for (int ibw = nof_chars-1; ibw >= 0; ibw--) {
+    irev = nof_chars - ibw - 1;
+    revstr[irev] = str[ibw];
+  }  // for: all character indices from back to and including 0
+  strncpy(str, revstr, nof_chars);
 }
 
 int main(void) {
