@@ -1,0 +1,53 @@
+Grading at Sun Jun 16 14:32:43 UTC 2019
+**Testing broken implementation 10 **
+-------------------------------------
+
+Test with x**y = 2**2 = 4, gave failed answer of 2
+**Testing broken implementation 11 **
+-------------------------------------
+
+Test with x**y = -1**1 = -1, gave failed answer of 7
+**Testing broken implementation 1 **
+-------------------------------------
+
+Test with x**y = 0**1 = 0, gave failed answer of 1
+**Testing broken implementation 2 **
+-------------------------------------
+
+Test with x**y = 0**1 = 0, gave failed answer of 1
+**Testing broken implementation 3 **
+-------------------------------------
+
+Test with x**y = 0**0 = 1, gave failed answer of 0
+**Testing broken implementation 4 **
+-------------------------------------
+
+Test with x**y = -1**1 = -1, gave failed answer of 65535
+**Testing broken implementation 5 **
+-------------------------------------
+
+Test with x**y = 2**2 = 4, gave failed answer of 2
+**Testing broken implementation 6 **
+-------------------------------------
+
+Test with x**y = 0**1 = 0, gave failed answer of 2
+**Testing broken implementation 7 **
+-------------------------------------
+
+Test with x**y = 0**1 = 0, gave failed answer of 3
+**Testing broken implementation 8 **
+-------------------------------------
+
+Test with x**y = 2**3 = 8, gave failed answer of 6
+**Testing broken implementation 9 **
+-------------------------------------
+
+Test with x**y = 1**1 = 1, gave failed answer of 0
+**Testing correct implementation **
+-------------------------------------
+
+
+All tests were ok.
+
+
+Overall Grade: PASSED
