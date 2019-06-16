@@ -11,12 +11,14 @@ unsigned power(unsigned x, unsigned y) {
       return 0;
     }  // else: y not 0
   }
+
+  if (y == 1) {
+    return x;
+  }
+  else if (y == 0) {
+    return 1;
+  }
   else {
-    if (y == 1) {
-      return x;
-    }  // if: y == 1
-    else {
-      return x*power(x, y-1);
-    }  // if y > 1
-  }  // else: x >0
+    return x*power(x, y-1);
+  }  // if y > 1
 } // power function

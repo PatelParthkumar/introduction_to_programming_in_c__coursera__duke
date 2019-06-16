@@ -19,6 +19,7 @@ int main(void) {
   do_test(0, 1, 0);
   do_test(0, 0, 1);
   do_test(1, 1, 1);
+  do_test(5, 0, 1);
   do_test(-1, 1, -1);
   do_test(10, 1, 10);
   do_test(2, 2, 4);
