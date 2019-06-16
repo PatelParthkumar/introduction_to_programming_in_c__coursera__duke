@@ -95,7 +95,6 @@ First, you will write four functions in deck.c:
    since they are not used for security
    purposes). Note that you should not need to
    use the 'srand' function.
-
    We will note that in trying to devise
    this algorithm, you should not
    try to shuffle a deck of cards "normally".
