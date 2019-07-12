@@ -127,10 +127,11 @@ int is_n_length_straight_at(deck_t * hand, size_t index, suit_t fs, size_t n) {
 // check if there are n cards in a row
 int is_ace_low_straight_at(deck_t *hand, size_t index, suit_t fs) {
   int retval = 0;
+  //  printf("card/wanted suit %d/%d, value %u\n", hand->cards[index]->suit, fs, hand->cards[index]->value);
   if (hand->cards[index]->value == VALUE_ACE &&
       (fs == NUM_SUITS || fs == hand->cards[index]->suit)) {
     // check if there is a 5, 4, 3, 2
-    for (size_t i5 = index+1; i5 < hand->n_cards-4; i5++) {
+    for (size_t i5 = index+1; i5 < hand->n_cards; i5++) {
       if (hand->cards[i5]->value == 5) {
 	int is_fnd = is_n_length_straight_at(hand, i5, fs, 4);
 	if (is_fnd == 1) {
