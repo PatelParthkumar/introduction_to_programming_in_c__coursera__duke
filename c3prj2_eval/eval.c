@@ -1,47 +1,224 @@
-#include "eval.h"
+ #include "eval.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 
-int card_ptr_comp(const void * vp1, const void * vp2) {
-  return 0;
+int card_ptr_comp(const void *vp1, const void *vp2) {
+  const card_t * const * cpp1 = vp1;
+  const card_t * const * cpp2 = vp2;
+
+  const card_t * cp1 = *cpp1;
+  const card_t * cp2 = *cpp2;
+
+  int retval = 1;
+  if (cp1->value > cp2->value) {
+    retval = -1;
+  }
+  else if (cp1->value == cp2->value) {
+    if (cp1->suit > cp2->suit) {
+      retval = -1;
+    }
+    else if (cp1->suit < cp2->suit) {
+      retval = 1;
+    }  // else: suit1 < suit2
+  }  // v1 == v2
+  else if(cp1->value < cp2->value) {
+    retval = 1;
+  }
+  
+  return retval;
 }
 
+
+// checks if hand contains a flush
+// return the enum suit_t if found, otherwise NUM_SUITS
 suit_t flush_suit(deck_t * hand) {
-  return NUM_SUITS;
+  // check the suits and count each hand
+  size_t nof_per_suit[4] = {0, 0, 0, 0};
+  card_t *this_card;
+  for (size_t ic = 0; ic < hand->n_cards; ic++) {
+    this_card = hand->cards[ic];
+    nof_per_suit[this_card->suit]++;
+  }  // for: all cards in hand
+
+  // check which suit occurs most ofter
+  suit_t retval = NUM_SUITS;
+  for (suit_t isuit=SPADES; isuit < NUM_SUITS; isuit++) {
+    if (nof_per_suit[isuit] >= 5) {
+      retval = isuit;
+    }
+  }  // for: all suits (cast to intiegers
+  return retval;
 }
 
+//returns the largest element in an array
 unsigned get_largest_element(unsigned * arr, size_t n) {
-  return 0;
+  unsigned retval = arr[0];
+  for (size_t ielm = 1; ielm < n; ielm++) {
+    if (arr[ielm] > retval) {
+      retval = arr[ielm];
+    } // if: element is bigger than retval
+  }  // for all elements in array
+
+  //  printf("largest index = %d", retval);
+  return retval;
 }
 
 size_t get_match_index(unsigned * match_counts, size_t n,unsigned n_of_akind){
+  size_t retval = -1;
+  for (size_t ielm = 0; ielm < n; ielm++ ) {
+    if (match_counts[ielm] == n_of_akind) {
+      retval = ielm;
+      break;  // break to ensure the lowest index is kept
+    }  // if: found n_of_akind
+  }  // for: all elements in array
+  return retval;
+}
 
-  return 0;
-}
-ssize_t  find_secondary_pair(deck_t * hand,
-			     unsigned * match_counts,
-			     size_t match_idx) {
-  return -1;
+// check if there is a secondary pair (only a pair is to be found)
+ssize_t find_secondary_pair(deck_t * hand,
+	                    unsigned * match_counts,
+			    size_t match_idx) {
+  // init return value
+  ssize_t retval = -1;
+
+  for (size_t ielm = match_idx+2; ielm < hand->n_cards; ielm++) {
+    if (match_counts[ielm] == 2) {
+      retval = ielm;
+      break;
+    }  // if: a secondary pair is found
+  }  // for: counting from previously found index
+
+  return retval;
 }
 
-int is_straight_at(deck_t * hand, size_t index, suit_t fs) {
-  return 0;
+// if there is a straight (flush) at an index to test *index*
+int is_n_length_straight_at(deck_t * hand, size_t index, suit_t fs, size_t n) {
+  
+  // check suit and value of index
+  card_t card_at_index = *(hand->cards[index]);  // double pointer
+  unsigned value_at_index = card_at_index.value;
+
+  
+  unsigned is_fnd = 1;  // pseudo boolean
+  // loop all indices from index to end
+  for (size_t i=1; i<n; i++) {
+    // value to find
+    unsigned val2find = value_at_index - i;
+    is_fnd = 0;
+    for (size_t j=index+1; j<hand->n_cards; j++) {
+      if (hand->cards[j]->value == val2find) {
+	if (fs == NUM_SUITS || hand->cards[j]->suit == fs) {
+	  is_fnd = 1;
+	} // incorrect suit for straight flush
+      }  // if: correct value isfound
+    }  // for: looping all cards in the deck
+
+    if (is_fnd == 0) {
+      break;
+    }  // if: missing card for a straight
+  } // for: counting from 1 to 5
+
+  return is_fnd;
 }
+
+// check if there are n cards in a row
+int is_ace_low_straight_at(deck_t *hand, size_t index, suit_t fs) {
+  // find low straight
+  int is_ace_fnd = 0;
+  int low_part_fnd = is_n_length_straight_at(hand, index, fs, 4);
+  if (low_part_fnd == 1) {
+    // check if ace is present
+    for (size_t i=index+1; i < 4; i++) {
+      if (hand->cards[i]->suit == fs || fs == NUM_SUITS) {
+	is_ace_fnd = -1;
+      }  // if wanted ace found
+    }  // loop first 4 elements (ordered, thus only 4 aces possible)
+  }  // if: 5, 4, 3, 2 sequence found
+
+  return is_ace_fnd;
+}
+
+int is_straight_at(deck_t *hand, size_t index, suit_t fs) {
+  // check for generic straight
+  int retval = is_n_length_straight_at(hand, index, fs, 5);
+  if (retval == 0) {
+    retval = is_ace_low_straight_at(hand, index, fs);
+  }  // if: no generic straight found
+  
+  return retval;
+}
+
 
 hand_eval_t build_hand_from_match(deck_t * hand,
 				  unsigned n,
 				  hand_ranking_t what,
 				  size_t idx) {
-
+  
   hand_eval_t ans;
+
+  // set ranking
+  ans.ranking = what;
+
+  size_t counter = 0;
+  for (size_t icard = idx; icard < idx+n; icard++) {
+    ans.cards[counter] = hand->cards[icard];
+    counter++;  
+  }  // for: n cards starting from idx
+
+  if (counter < 5) {
+    size_t nof_before = idx;
+    if (5 - counter < idx) {
+      nof_before = 5 - counter;
+    }  // upto the amount still to do
+    for (size_t ibefore=0; ibefore < nof_before; ibefore++) {
+      ans.cards[counter] = hand->cards[ibefore];
+      counter++;
+    }  // for: all before
+
+    if (counter < 5) {
+      size_t nof_after = 5 - counter;
+      for (size_t iafter=0; iafter < nof_after; iafter++) {
+	ans.cards[counter] = hand->cards[idx+n+iafter];
+	counter++;
+      }  // for: all after
+    }  // if: still some cards to pick
+  } // more cards to add
+
   return ans;
 }
 
 
 int compare_hands(deck_t * hand1, deck_t * hand2) {
+  int retval = 0;
 
-  return 0;
+  // sort each hand
+  qsort(hand1->cards, hand1->n_cards, sizeof(hand1->cards), card_ptr_comp);
+  qsort(hand2->cards, hand2->n_cards, sizeof(hand2->cards[0]), card_ptr_comp);
+
+  hand_eval_t heval1 = evaluate_hand(hand1);
+  hand_eval_t heval2 = evaluate_hand(hand2);
+
+  if (heval1.ranking == heval2.ranking) {
+    // is a tie
+    for (size_t icard = 0; icard < 5; icard++) {
+      retval = heval1.cards[icard]->value -
+	       heval2.cards[icard]->value;
+      // if there is a difference, break and keep retval
+      if (retval != 0) {
+	break;
+      }  // if difference found
+    }  // loop all 5 cards
+  }
+  else {
+    if (heval1.ranking > heval2.ranking) {
+      retval = 1;
+    }  // if hand 1 is better
+    else {
+      retval = -1;
+    }  // hand 2 is better
+  }  // no tie
+  return retval;
 }
 
 
