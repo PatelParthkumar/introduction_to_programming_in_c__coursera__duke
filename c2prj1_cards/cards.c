@@ -40,7 +40,9 @@ char value_letter(card_t c) {
   /*
   returns the character from the value. Thus 0 -> '0', 14 -> 'A'
   */
+  //  printf("c.value (0) = %u\n", c.value);
   if (c.value <= 10) {
+    //    printf("------------------- lkjasdflkjasdfklj----------------\n");
     return '0' + c.value%10;
   }  // if: value below 10
   else if (c.value == VALUE_JACK) {

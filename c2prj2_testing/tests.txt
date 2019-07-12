@@ -32,5 +32,4 @@ Ad Kd Qd Jd 0d 7s 6h; 6h 7s Kd Qd Jd 0d Ad
 Ad 2d 3d 4d 5d 5h 5s; 5s Ad 2d 3d 4d 5d 5h
 
 // single value
-As Ks Qs Js 0s Ad Kd; Ac Kc Qc Jc 0c Ah Kh
-
+//As Ks Qs Js 0s Ad Kd; Ac Kc Qc Jc 0c Ah Kh
