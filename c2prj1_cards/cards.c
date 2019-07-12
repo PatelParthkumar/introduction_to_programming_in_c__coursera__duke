@@ -84,7 +84,7 @@ void print_card(card_t c) {
   // prints out the card according to <value><suit> in letters. E.g., As is the ace of spades
   char valchar = value_letter(c);
   char suitchar = suit_letter(c);
-  printf("%c%c", valchar, suitchar); 
+  printf("%c%c ", valchar, suitchar); 
 }  // fcn: print_card
 
 card_t card_from_letters(char value_let, char suit_let) {
