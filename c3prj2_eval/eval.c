@@ -102,12 +102,11 @@ ssize_t find_secondary_pair(deck_t * hand,
 int is_n_length_straight_at(deck_t * hand, size_t index, suit_t fs, size_t n) {
 
   //  printf("n = %zu\n", n);
-  //  printf("suit wanted is %d\n", fs);
-  //  printf("suit found is %d\n", hand->cards[index]->suit);
+  //  printf("suit card/wanted is %d/%d\n", hand->cards[index]->suit, fs);
   // check if first suit is correct
   int retval = 0;
   if (hand->cards[index]->suit == fs || fs == NUM_SUITS) {
-
+    //    printf("--> entering search .. ");
     unsigned nof_seq = 1;  // 1, since first is free
     // loop all indices from index to end
     for (size_t i=1; i<n; i++) {
@@ -121,7 +120,8 @@ int is_n_length_straight_at(deck_t * hand, size_t index, suit_t fs, size_t n) {
       }  // for: looping all cards in the deck
     } // for: counting from 1 to 5
 
-    if (nof_seq == n) {
+    //    printf("sequence of %d found\n", nof_seq); 
+    if (nof_seq >= n) {
       retval = 1;
     }
   }  // if: indexed suit is compatible
