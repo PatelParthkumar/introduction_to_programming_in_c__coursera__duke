@@ -4,13 +4,15 @@
 #include <assert.h>
 
 int card_ptr_comp(const void *vp1, const void *vp2) {
+  // change pointer type from void to card_t
   const card_t * const * cpp1 = vp1;
   const card_t * const * cpp2 = vp2;
 
+  // remove the constantness of the pointer
   const card_t * cp1 = *cpp1;
   const card_t * cp2 = *cpp2;
 
-  int retval = 1;
+  int retval = 0;
   if (cp1->value > cp2->value) {
     retval = -1;
   }
@@ -33,21 +35,29 @@ int card_ptr_comp(const void *vp1, const void *vp2) {
 // checks if hand contains a flush
 // return the enum suit_t if found, otherwise NUM_SUITS
 suit_t flush_suit(deck_t * hand) {
-  // check the suits and count each hand
-  size_t nof_per_suit[4] = {0, 0, 0, 0};
-  card_t *this_card;
-  for (size_t ic = 0; ic < hand->n_cards; ic++) {
-    this_card = hand->cards[ic];
-    nof_per_suit[this_card->suit]++;
-  }  // for: all cards in hand
-
-  // check which suit occurs most ofter
   suit_t retval = NUM_SUITS;
-  for (suit_t isuit=SPADES; isuit < NUM_SUITS; isuit++) {
-    if (nof_per_suit[isuit] >= 5) {
-      retval = isuit;
+
+  size_t counter = 0;
+  // loop all suits
+  for (suit_t suit=SPADES; suit < NUM_SUITS; suit++) {
+    //    printf("suit %d\n", suit);
+    // reset counter
+    counter = 0;
+
+    // loop all cards and count the occurrences of this suit
+    for (size_t icard = 0; icard < hand->n_cards; icard++) {
+      if (hand->cards[icard]->suit == suit) {
+	counter++;
+      }  // card is of wanted suit
+    }  // for: all cards
+    if (counter >= 5) {
+      // printf("suit %d found\n", suit);
+      retval = suit;
+      break;
     }
-  }  // for: all suits (cast to intiegers
+  }
+
+  // printf("The final suit found is %d\n", retval);
   return retval;
 }
 
@@ -95,28 +105,26 @@ ssize_t find_secondary_pair(deck_t * hand,
 // if there is a straight (flush) at an index to test *index*
 int is_n_length_straight_at(deck_t * hand, size_t index, suit_t fs, size_t n) {
   
-  // check suit and value of index
-  card_t card_at_index = *(hand->cards[index]);  // double pointer
-  unsigned value_at_index = card_at_index.value;
-
-  
-  unsigned is_fnd = 1;  // pseudo boolean
+  unsigned is_fnd = 0;  // pseudo boolean
   // loop all indices from index to end
   for (size_t i=1; i<n; i++) {
     // value to find
-    unsigned val2find = value_at_index - i;
     is_fnd = 0;
+    unsigned val2find = hand->cards[index]->value - i;
     for (size_t j=index+1; j<hand->n_cards; j++) {
       if (hand->cards[j]->value == val2find) {
 	if (fs == NUM_SUITS || hand->cards[j]->suit == fs) {
 	  is_fnd = 1;
+	  // printf("suit wanted/gotten %d/%d\n", fs, hand->cards[j]->suit);
+	  break;
 	} // incorrect suit for straight flush
       }  // if: correct value isfound
     }  // for: looping all cards in the deck
 
+    // check if wanted value was found
     if (is_fnd == 0) {
       break;
-    }  // if: missing card for a straight
+    }  // value was not found
   } // for: counting from 1 to 5
 
   return is_fnd;
@@ -124,19 +132,21 @@ int is_n_length_straight_at(deck_t * hand, size_t index, suit_t fs, size_t n) {
 
 // check if there are n cards in a row
 int is_ace_low_straight_at(deck_t *hand, size_t index, suit_t fs) {
-  // find low straight
-  int is_ace_fnd = 0;
-  int low_part_fnd = is_n_length_straight_at(hand, index, fs, 4);
-  if (low_part_fnd == 1) {
-    // check if ace is present
-    for (size_t i=index+1; i < 4; i++) {
-      if (hand->cards[i]->suit == fs || fs == NUM_SUITS) {
-	is_ace_fnd = -1;
-      }  // if wanted ace found
-    }  // loop first 4 elements (ordered, thus only 4 aces possible)
-  }  // if: 5, 4, 3, 2 sequence found
-
-  return is_ace_fnd;
+  int retval = 0;
+  if (hand->cards[index]->value == VALUE_ACE &&
+      (fs == NUM_SUITS || fs == hand->cards[index]->suit)) {
+    // check if there is a 5, 4, 3, 2
+    for (size_t i5 = index+1; i5 < hand->n_cards-4; i5++) {
+      if (hand->cards[i5]->value == 5) {
+	int is_fnd = is_n_length_straight_at(hand, i5, fs, 4);
+	if (is_fnd == 1) {
+	  retval = -1;
+	  break;
+	} // 5, 4, 3, 2 part is found
+      }  // check if card at i5 has value of 5
+    }  // loop possible indices where a 5 might be
+  }  // index has an ace of the correct suit if required
+  return retval;
 }
 
 int is_straight_at(deck_t *hand, size_t index, suit_t fs) {
@@ -272,6 +282,7 @@ int find_straight(deck_t * hand, suit_t fs, hand_eval_t * ans) {
     int x = is_straight_at(hand, i, fs);
     if (x != 0){
       if (x < 0) { //ace low straight
+	// printf("<<< suit is %zu/%d/%d >>>\n", i, fs, hand->cards[i]->suit);
 	assert(hand->cards[i]->value == VALUE_ACE &&
 	       (fs == NUM_SUITS || hand->cards[i]->suit == fs));
 	ans->cards[4] = hand->cards[i];
