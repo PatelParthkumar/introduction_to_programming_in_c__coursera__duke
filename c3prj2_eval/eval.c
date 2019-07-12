@@ -70,7 +70,7 @@ unsigned get_largest_element(unsigned * arr, size_t n) {
 }
 
 size_t get_match_index(unsigned * match_counts, size_t n,unsigned n_of_akind){
-  size_t retval = -1;
+  size_t retval = 0;
   for (size_t ielm = 0; ielm < n; ielm++ ) {
     if (match_counts[ielm] == n_of_akind) {
       retval = ielm;
@@ -86,13 +86,14 @@ ssize_t find_secondary_pair(deck_t * hand,
 			    size_t match_idx) {
   // init return value
   ssize_t retval = -1;
-
-  for (size_t ielm = match_idx+2; ielm < hand->n_cards; ielm++) {
-    if (match_counts[ielm] == 2) {
-      retval = ielm;
-      break;
-    }  // if: a secondary pair is found
-  }  // for: counting from previously found index
+  for (ssize_t inext = 0; inext < hand->n_cards; inext++) {
+    if (match_counts[inext] > 1) {
+      if (hand->cards[inext]->value != hand->cards[match_idx]->value) {
+	retval = inext;
+	break;
+      }  // another value
+    }  // another pair is found
+  }  // loop all indices after match_idx
 
   return retval;
 }
@@ -127,7 +128,6 @@ int is_n_length_straight_at(deck_t * hand, size_t index, suit_t fs, size_t n) {
 // check if there are n cards in a row
 int is_ace_low_straight_at(deck_t *hand, size_t index, suit_t fs) {
   int retval = 0;
-  //  printf("card/wanted suit %d/%d, value %u\n", hand->cards[index]->suit, fs, hand->cards[index]->value);
   if (hand->cards[index]->value == VALUE_ACE &&
       (fs == NUM_SUITS || fs == hand->cards[index]->suit)) {
     // check if there is a 5, 4, 3, 2
