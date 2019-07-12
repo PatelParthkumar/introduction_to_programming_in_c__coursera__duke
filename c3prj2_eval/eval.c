@@ -36,11 +36,10 @@ int card_ptr_comp(const void *vp1, const void *vp2) {
 // return the enum suit_t if found, otherwise NUM_SUITS
 suit_t flush_suit(deck_t * hand) {
   suit_t retval = NUM_SUITS;
-
   size_t counter = 0;
+
   // loop all suits
   for (suit_t suit=SPADES; suit < NUM_SUITS; suit++) {
-    //    printf("suit %d\n", suit);
     // reset counter
     counter = 0;
 
@@ -51,13 +50,10 @@ suit_t flush_suit(deck_t * hand) {
       }  // card is of wanted suit
     }  // for: all cards
     if (counter >= 5) {
-      // printf("suit %d found\n", suit);
       retval = suit;
       break;
     }
   }
-
-  // printf("The final suit found is %d\n", retval);
   return retval;
 }
 
@@ -70,7 +66,6 @@ unsigned get_largest_element(unsigned * arr, size_t n) {
     } // if: element is bigger than retval
   }  // for all elements in array
 
-  //  printf("largest index = %d", retval);
   return retval;
 }
 
@@ -115,7 +110,6 @@ int is_n_length_straight_at(deck_t * hand, size_t index, suit_t fs, size_t n) {
       if (hand->cards[j]->value == val2find) {
 	if (fs == NUM_SUITS || hand->cards[j]->suit == fs) {
 	  is_fnd = 1;
-	  // printf("suit wanted/gotten %d/%d\n", fs, hand->cards[j]->suit);
 	  break;
 	} // incorrect suit for straight flush
       }  // if: correct value isfound
@@ -221,7 +215,7 @@ int compare_hands(deck_t * hand1, deck_t * hand2) {
     }  // loop all 5 cards
   }
   else {
-    if (heval1.ranking > heval2.ranking) {
+    if (heval1.ranking < heval2.ranking) {
       retval = 1;
     }  // if hand 1 is better
     else {
@@ -282,7 +276,6 @@ int find_straight(deck_t * hand, suit_t fs, hand_eval_t * ans) {
     int x = is_straight_at(hand, i, fs);
     if (x != 0){
       if (x < 0) { //ace low straight
-	// printf("<<< suit is %zu/%d/%d >>>\n", i, fs, hand->cards[i]->suit);
 	assert(hand->cards[i]->value == VALUE_ACE &&
 	       (fs == NUM_SUITS || hand->cards[i]->suit == fs));
 	ans->cards[4] = hand->cards[i];
