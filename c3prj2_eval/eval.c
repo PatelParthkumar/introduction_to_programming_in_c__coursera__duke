@@ -104,28 +104,37 @@ int is_n_length_straight_at(deck_t * hand, size_t index, suit_t fs, size_t n) {
   //  printf("n = %zu\n", n);
   //  printf("suit card/wanted is %d/%d\n", hand->cards[index]->suit, fs);
   // check if first suit is correct
-  int retval = 0;
+  int is_fnd = 0;
   if (hand->cards[index]->suit == fs || fs == NUM_SUITS) {
-    //    printf("--> entering search .. ");
-    unsigned nof_seq = 1;  // 1, since first is free
+    
     // loop all indices from index to end
     for (size_t i=1; i<n; i++) {
       unsigned val2find = hand->cards[index]->value - i;
+      is_fnd = 0;  // set to not found!
+
+      // loop all indices starting from the main index
       for (size_t j = index+1; j < hand->n_cards; j++) {
+
+	// check if value of current index matches wanted value
         if (hand->cards[j]->value == val2find) {
+
+	  // check if suit matches
 	  if (fs == NUM_SUITS || hand->cards[j]->suit == fs) {
-	    nof_seq++;
+
+	    // set is_fnd to True and break the loop
+	    is_fnd = 1;
+	    break;
 	  } // incorrect suit for straight flush
         }  // if: correct value isfound
       }  // for: looping all cards in the deck
-    } // for: counting from 1 to 5
 
-    //    printf("sequence of %d found\n", nof_seq); 
-    if (nof_seq >= n) {
-      retval = 1;
-    }
-  }  // if: indexed suit is compatible
-  return retval;
+      // if is not found, break the main loop
+      if (is_fnd == 0) {
+	break;
+      }  // wanted number is NOT found
+    }  // count down from current value to current value minus n
+  }  // first card is already of wanted suit (otherwise fall through)
+  return is_fnd;
 }
 
 // check if there are n cards in a row
