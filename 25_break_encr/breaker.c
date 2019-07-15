@@ -52,7 +52,8 @@ int main(int argc, char ** argv) {
   }  // loop all characters
 
   // assuming max found = 'e' ('a' + 4)
-  printf("%d\n", imax - 4);
+  
+  printf("%d\n", (26 + imax - 4)%26);
 
   return EXIT_SUCCESS;
 }  // main
