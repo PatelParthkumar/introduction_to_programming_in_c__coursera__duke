@@ -4,7 +4,7 @@
 
 int main(int argc, char ** argv) {
   if (argc != 2) {
-    //fprintf(stderr, "Usage: breaker <filename>\n");
+    fprintf(stderr, "Usage: breaker <filename>\n");
     return EXIT_FAILURE;
   }  // nof inputs wrong
 
