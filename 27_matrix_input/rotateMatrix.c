@@ -68,10 +68,16 @@ int main(int argc, char **argv) {
     matin[irow][icol] = c;
   } // loop content until EOF (-1)
 
+  // check if there were 110 characters
+  if (ichar != 109) {
+    fprintf(stderr, "Content of file is not exactly as required. Expected 109 found (%d)\n", ichar);
+    return EXIT_FAILURE;
+  }
+  
   // close up shop
   int stat = fclose(fin);
   if (stat != 0) {
-    printf("File *%s* could not be closed (status: %d)\n", filename, stat);
+    fprintf(stderr, "File *%s* could not be closed (status: %d)\n", filename, stat);
     return EXIT_FAILURE;
   }  // file not closed correctly
 
