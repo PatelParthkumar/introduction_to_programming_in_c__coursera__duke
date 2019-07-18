@@ -61,11 +61,16 @@ int main(int argc, char **argv) {
 	return EXIT_FAILURE;
       }  // newline not on a 10
       os++;
-      continue;
     }
-    irow = (ichar - os)/10;
-    icol = (ichar - os)%10;
-    matin[irow][icol] = c;
+    else {
+      irow = (ichar - os)/10;
+      icol = (ichar - os)%10;
+      matin[irow][icol] = c;
+    }
+    if (ichar > 109) {
+      fprintf(stderr, "Content of file (%d) is greater than expected (109)\n", ichar);
+      return EXIT_FAILURE;
+    }
   } // loop content until EOF (-1)
 
   // check if there were 110 characters
