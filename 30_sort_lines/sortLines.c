@@ -30,6 +30,10 @@ FILE ** init_streams(size_t * nof_streams, int argc, char ** argv) {
       streams[ifile] = fopen(argv[1+ifile], "r");
       if (streams[ifile] == NULL) {
 	fprintf(stderr, "The file could not be opened\n");
+	for (size_t iifile = 0; iifile <= ifile; ++iifile) {
+	  free(streams[iifile]);
+	}
+	free(streams);
 	exit(EXIT_FAILURE);
       }
     }  // for: all filenames
@@ -70,9 +74,13 @@ int main(int argc, char ** argv) {
   
   char ** buffer = NULL;
 
+  int is_stdin = 0;
+  if (argc == 1) {
+    is_stdin = 1;
+  }
+  
   size_t nof_streams = 0;
   FILE ** streams = init_streams(&nof_streams, argc, argv);
-
   size_t nof_lines = 0;
   for (int istream = 0; istream < nof_streams; ++istream) {
     buffer = read_stream(streams[istream], &nof_lines);
@@ -85,10 +93,14 @@ int main(int argc, char ** argv) {
       free(buffer[iline]);
     }  // for: all lines
     free(buffer);
-    free(streams[istream]);
+    if (is_stdin == 0) {
+      free(streams[istream]);
+    }
   }  // loop all steams
 
-  free(streams);
+  if (is_stdin == 0) {
+    free(streams);
+  }
   
   return EXIT_SUCCESS;
 }
