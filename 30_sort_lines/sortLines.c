@@ -30,8 +30,8 @@ FILE ** init_streams(size_t * nof_streams, int argc, char ** argv) {
       streams[ifile] = fopen(argv[1+ifile], "r");
       if (streams[ifile] == NULL) {
 	fprintf(stderr, "The file could not be opened\n");
-	for (size_t iifile = 0; iifile <= ifile; ++iifile) {
-	  free(streams[iifile]);
+	for (size_t iifile = 0; iifile < ifile; ++iifile) {
+	  fclose(streams[iifile]);
 	}
 	free(streams);
 	exit(EXIT_FAILURE);
@@ -72,7 +72,7 @@ void print_buffer(char ** buffer, int nof_lines) {
 
 int main(int argc, char ** argv) {
   
-  char ** buffer = NULL;
+  char ** buffer = NULL;  // nothing to free if there is no buffer
 
   int is_stdin = 0;
   if (argc == 1) {
