@@ -94,7 +94,7 @@ int main(int argc, char ** argv) {
     }  // for: all lines
     free(buffer);
     if (is_stdin == 0) {
-      free(streams[istream]);
+      fclose(streams[istream]);
     }
   }  // loop all steams
 
