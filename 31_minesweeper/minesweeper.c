@@ -13,7 +13,8 @@
 #define UNKNOWN -1
 
 #define IS_MINE(x) ((x) == HAS_MINE || (x) == KNOWN_MINE)
-
+#define MAX(x,y) (((x)>(y))?(x):(y))
+#define MIN(x,y) (((x)<(y))?(x):(y))
 
 struct _board_t {
   int ** board;
@@ -42,8 +43,35 @@ void addRandomMine(board_t * b) {
 
 board_t * makeBoard(int w, int h, int numMines) {
   //WRITE ME!
-  return NULL;
+
+  // init board pointer
+  // malloc the board structure
+  board_t * b = malloc(sizeof(*b));
+
+  // malloc the array of row pointers
+  b->board = malloc(h*sizeof(*b->board));
+  b->width = w;
+  b->height = h;
+  b->totalMines = numMines;
+
+  // fill the board
+  for (int irow = 0; irow < h; ++irow) {
+    // malloc an array of ints for this row
+    b->board[irow] = malloc(w*sizeof(*b->board[irow]));
+    
+    for (int icol = 0; icol < w; ++icol) {
+      b->board[irow][icol] = UNKNOWN;
+    }  // loop columns
+  }  // loop rows
+
+  // add mines randomly
+  for (int imine = 0; imine < numMines; ++imine) {
+    addRandomMine(b);
+  }
+
+  return b;
 }
+
 void printBoard(board_t * b) {    
   int found = 0;
   printf("    ");
@@ -96,7 +124,24 @@ void printBoard(board_t * b) {
 }
 int countMines(board_t * b, int x, int y) {
   //WRITE ME!
-  return 0;
+  int mines_counted = 0;
+  int ir0 = MAX(0, x-1);
+  int ir1 = MIN(b->height-1, x+1);
+  int ic0 = MAX(0, y-1);
+  int ic1 = MIN(b->width-1, y+1);
+
+  // printf("rows: from %d to %d\n", ir0, ir1);
+  // printf("cols: from %d to %d\n", ic0, ic1);
+  for (int ir = ir0; ir <=ir1; ++ir) {
+    for (int ic = ic0; ic <= ic1; ++ic) {
+      // count if it is on the center
+      if (ic != x || ir != y) {
+	mines_counted += IS_MINE(b->board[ir][ic]);
+      } // is not center square
+    }  // for: all columns
+  }  // for: all rows
+  
+  return mines_counted;
 }
 int click (board_t * b, int x, int y) {
   if (x < 0 || x >= b->width ||
@@ -119,11 +164,24 @@ int click (board_t * b, int x, int y) {
 
 int checkWin(board_t * b) {
   //WRITE ME!
-  return 0;
+  for (int ir = 0; ir < b->height; ++ir) {
+    for (int ic = 0; ic < b->width; ++ic) {
+      if (b->board[ir][ic] == UNKNOWN) {
+	return 0;
+      }  // UNKNOWN found
+    }  // columns
+  }  // rows
+
+  return 1;
 }
 
 void freeBoard(board_t * b) {
   //WRITE ME!
+  for (int ir = 0; ir < b->height; ++ir) {
+    free(b->board[ir]);
+  }
+  free(b->board);
+  free(b);
 }
 
 int readInt(char ** linep, size_t * lineszp) {
