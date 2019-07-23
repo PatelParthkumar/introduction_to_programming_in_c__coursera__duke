@@ -69,6 +69,13 @@ board_t * makeBoard(int w, int h, int numMines) {
     addRandomMine(b);
   }
 
+  //  for (int ir = 0; ir < b->height;  ++ir) {
+  //    printf("\n");
+  //    for (int ic = 0; ic < b->width; ++ic) {
+  //      printf("%d ", b->board[ir][ic]);
+  //    }
+  //  }
+  
   return b;
 }
 
@@ -124,15 +131,16 @@ void printBoard(board_t * b) {
 }
 int countMines(board_t * b, int x, int y) {
   //WRITE ME!
+  //  printf("[JKA] (%d, %d)\n", y, x);
   int mines_counted = 0;
-  int ir0 = MAX(0, x-1);
-  int ir1 = MIN(b->height-1, x+1);
-  int ic0 = MAX(0, y-1);
-  int ic1 = MIN(b->width-1, y+1);
+  int ir0 = MAX(0, y-1);
+  int ir1 = MIN((b->height)-1, y+1);
+  int ic0 = MAX(0, x-1);
+  int ic1 = MIN((b->width)-1, x+1);
 
-  // printf("rows: from %d to %d\n", ir0, ir1);
-  // printf("cols: from %d to %d\n", ic0, ic1);
-  for (int ir = ir0; ir <=ir1; ++ir) {
+  // printf("[JKA] rows: from %d to %d\n", ir0, ir1);
+  // printf("[JKA] cols: from %d to %d\n", ic0, ic1);
+  for (int ir = ir0; ir <= ir1; ++ir) {
     for (int ic = ic0; ic <= ic1; ++ic) {
       // count if it is on the center
       if (ic != x || ir != y) {
@@ -140,7 +148,8 @@ int countMines(board_t * b, int x, int y) {
       } // is not center square
     }  // for: all columns
   }  // for: all rows
-  
+
+  // printf("[JKA] mines counted: %d\n", mines_counted);
   return mines_counted;
 }
 int click (board_t * b, int x, int y) {
@@ -215,6 +224,7 @@ void doReveal(board_t * b, int x, int y, int revealMines){
     for (int dx = -1; dx <=1 ; dx++) {
       int nx = x + dx;
       int ny = y + dy;
+      // printf("[JKA] (ny, nx) = (%d,%d)\n", ny, nx);
       if (nx >= 0 && nx < b->width &&
 	  ny >= 0 && ny < b->height) {
 	if (revealMines) {
