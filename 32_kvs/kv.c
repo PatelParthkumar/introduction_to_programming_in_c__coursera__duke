@@ -8,6 +8,7 @@ kvarray_t * readKVs(const char * fname) {
   FILE * fid = fopen(fname, "r");
   if (fid == NULL) {
     fprintf(stderr, "The file (%s) could not be opened\n", fname);
+    fclose(fid);
     exit(EXIT_FAILURE);
   }
 
