@@ -21,6 +21,7 @@ kvarray_t * readKVs(const char * fname) {
   kvarray_t *kvarray = malloc(sizeof(*kvarray));
   kvarray->kvpairs = malloc(sizeof(*kvarray->kvpairs));
   kvarray->num_in_array = malloc(sizeof(*kvarray->num_in_array));
+  *kvarray->num_in_array = 0;
   int counter = 0;
   int ieq = -1;
   int nchars_key = 0;
@@ -67,11 +68,11 @@ kvarray_t * readKVs(const char * fname) {
   fclose(fid);
 
   if (counter == 0) {
-    free(kvarray->num_in_array);
-    free(kvarray->kvpairs);
-    free(kvarray);
-    fprintf(stderr, "The file was empty\n");
-    exit(EXIT_FAILURE);
+    //    free(kvarray->num_in_array);
+    //    free(kvarray->kvpairs);
+    //    free(kvarray);
+    //fprintf(stderr, "The file was empty\n");
+    //exit(EXIT_FAILURE);
   }
 
   return kvarray;
