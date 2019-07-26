@@ -29,7 +29,7 @@ kvarray_t * readKVs(const char * fname) {
   
   while((len = getline(&line, &sz, fid)) != -1) {
     // peq is pointer to first equal sign
-    printf("length read = %d\n", (int)len);
+    //    printf("length read = %d\n", (int)len);
     
     peq = strchr(line, '=');
     ieq = peq - line;
