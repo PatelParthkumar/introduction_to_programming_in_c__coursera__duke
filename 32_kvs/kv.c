@@ -70,8 +70,10 @@ kvarray_t * readKVs(const char * fname) {
     free(kvarray->num_in_array);
     free(kvarray->kvpairs);
     free(kvarray);
+    fprintf(stderr, "The file was empty\n");
     exit(EXIT_FAILURE);
   }
+
   return kvarray;
 }
 
