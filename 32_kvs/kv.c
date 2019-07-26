@@ -8,7 +8,6 @@ kvarray_t * readKVs(const char * fname) {
   FILE * fid = fopen(fname, "r");
   if (fid == NULL) {
     fprintf(stderr, "The file (%s) could not be opened\n", fname);
-    fclose(fid);
     exit(EXIT_FAILURE);
   }
 
@@ -17,9 +16,8 @@ kvarray_t * readKVs(const char * fname) {
   ssize_t len = 0;
   char *peq = NULL;
 
-  // init kvpair as a pointer (malloc'd)
   kvpair_t * kvpair = NULL;
-  // init kvarray as apointer (malloc'd)
+
   kvarray_t *kvarray = malloc(sizeof(*kvarray));
   kvarray->kvpairs = malloc(sizeof(*kvarray->kvpairs));
   kvarray->num_in_array = malloc(sizeof(*kvarray->num_in_array));
@@ -36,34 +34,22 @@ kvarray_t * readKVs(const char * fname) {
     nchars_key = ieq;
     nchars_value = len - ieq - 2;
 
-    //    printf("<<< line: '%s", line);
-    //    printf("location of equal sign at %d\n", nchars_key);
-    //    printf("num chars value = %d\n", nchars_value);
-    
     // reallocate memory based on sz and ipos_eq (allow room for the \0 terminator)
     kvpair = malloc(sizeof(*kvpair));
     kvpair->key = malloc((nchars_key + 1)*sizeof(*kvpair->key));
     kvpair->value = malloc((nchars_value + 1)*sizeof(*kvpair->value));
 
-    //    printf("kvpair address: %p\n", (void*)kvpair);
-    //    kvpair->key = realloc(kvpair->key, (nchars_key + 1)*sizeof(*kvpair->key));
-    //    kvpair->value = realloc(kvpair->value, (nchars_value + 1)*sizeof(*kvpair->value));
-
     // read key
     for (int ipos = 0; ipos < nchars_key; ++ipos) {
-      //      printf("k%d ", ipos);
       kvpair->key[ipos] = line[ipos];
     }  // loop key chars
     kvpair->key[nchars_key] = '\0';
-    //    printf("--> read key string = '%s'\n", kvpair->key);
 
     // read value
     for (int ipos = ieq + 1; ipos < len-1; ++ipos) {
-      //      printf("v%d ", ipos);
       kvpair->value[ipos - ieq - 1] = line[ipos];
     }  // loop value
     kvpair->value[nchars_value] = '\0';
-    //    printf("--> read value string = '%s'\n", kvpair->value);
     
     // add kvpair to kvarray
     *kvarray->num_in_array = counter + 1;
@@ -72,8 +58,6 @@ kvarray_t * readKVs(const char * fname) {
     // after reallocation add kvpair
     kvarray->kvpairs[counter] = kvpair;
 
-    //    printf("num pairs added = %d\n", (int) *kvarray->num_in_array);
-    //    line = NULL;
     ++counter;
   } // loop all lines until -1
 
