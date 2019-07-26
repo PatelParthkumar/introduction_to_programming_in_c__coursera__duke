@@ -16,7 +16,7 @@ kvarray_t * readKVs(const char * fname) {
   ssize_t len = 0;
   char *peq = NULL;
 
-  kvpair_t * kvpair = NULL;
+  //  kvpair_t * kvpair = NULL;
 
   kvarray_t *kvarray = malloc(sizeof(*kvarray));
   kvarray->kvpairs = malloc(sizeof(*kvarray->kvpairs));
@@ -28,6 +28,8 @@ kvarray_t * readKVs(const char * fname) {
   
   while((len = getline(&line, &sz, fid)) != -1) {
     // peq is pointer to first equal sign
+    printf("length read = %d\n", (int)len);
+    
     peq = strchr(line, '=');
     ieq = peq - line;
 
@@ -35,7 +37,7 @@ kvarray_t * readKVs(const char * fname) {
     nchars_value = len - ieq - 2;
 
     // reallocate memory based on sz and ipos_eq (allow room for the \0 terminator)
-    kvpair = malloc(sizeof(*kvpair));
+    kvpair_t * kvpair = malloc(sizeof(*kvpair));
     kvpair->key = malloc((nchars_key + 1)*sizeof(*kvpair->key));
     kvpair->value = malloc((nchars_value + 1)*sizeof(*kvpair->value));
 
@@ -64,6 +66,12 @@ kvarray_t * readKVs(const char * fname) {
   free(line);
   fclose(fid);
 
+  if (counter == 0) {
+    free(kvarray->num_in_array);
+    free(kvarray->kvpairs);
+    free(kvarray);
+    exit(EXIT_FAILURE);
+  }
   return kvarray;
 }
 
@@ -98,5 +106,4 @@ char * lookupValue(kvarray_t * pairs, const char * key) {
   }  // loop pairs
 
   return NULL;
-  
 }
