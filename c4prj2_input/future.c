@@ -34,7 +34,7 @@ void future_cards_from_deck(deck_t * deck, future_cards_t * fc) {
     deck_t d = fc->decks[i];
     // get pointer for this placeholder
     for (size_t j = 0; i < d.n_cards; ++i) {
-      d.cards[j] = c;
+      *d.cards[j] = *c;
     }  // loop all placeholders for this card
   }  // loop all placeholders
   
