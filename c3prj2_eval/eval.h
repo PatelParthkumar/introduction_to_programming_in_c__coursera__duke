@@ -7,7 +7,8 @@ struct hand_eval_tag {
 };
 typedef struct hand_eval_tag hand_eval_t;
 
-hand_eval_t evaluate_hand(deck_t * hand) ;
+unsigned * get_match_counts(deck_t * hand);
+hand_eval_t evaluate_hand(deck_t * hand);
 int compare_hands(deck_t * hand1, deck_t * hand2) ;
 
 #endif
