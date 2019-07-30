@@ -53,7 +53,7 @@ void add_card_to(deck_t * deck, card_t c) {
 
 card_t * add_empty_card(deck_t * deck) {
 
-  card_t c_empty = {.value = 20,
+  card_t c_empty = {.value = -1,
 		    .suit = NUM_SUITS};
 
   add_card_to(deck, c_empty);
