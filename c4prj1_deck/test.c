@@ -96,9 +96,9 @@ int main() {
 
   
   //free_deck(hfull[0]);
-  free_deck(hfull[1]);
+  //free_deck(hfull[1]);
   //free(hfull);
-  return 0;
+  //return 0;
   
   deck_t * d_rem = build_remaining_deck(hfull, 1);
   printf("Remaining deck:\n");
@@ -114,11 +114,12 @@ int main() {
   //free(hfull[1]);
 
   printf("<<< check *get_match_counts* >>>\n");
-  //  unsigned * array;
+  printf("number of cards in hand: %d\n", (int)d_rem->n_cards);
+
   unsigned * array = get_match_counts(d_rem);
   fprintf(stdout, "The match counts are:\n");
-  for (int i = 0; i < d_rem->n_cards; i++) {
-    printf("|%d", (int)array[i]);
+  for (size_t i = 0; i < d_rem->n_cards; i++) {
+    fprintf(stderr, "|%d", (int)array[i]);
   }  // loop all elements
   printf("|\n");
   
