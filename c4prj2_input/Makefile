@@ -1,6 +1,6 @@
 CLFAGS = -Wall -Werror -pedantic -std=gnu99 -Wmissing-prototypes
-test-input: test-input.o input.o deck.o cards.o eval.o
-	gcc -o test-input test-input.o input.o deck.o cards.o eval.o
+test-input: test-input.o input.o deck.o cards.o eval.o future.o
+	gcc -o test-input test-input.o input.o deck.o cards.o eval.o future.o
 test-future: test-future.o future.o deck.o cards.o eval.o
 	gcc -o test-future test-future.o future.o deck.o cards.o eval.o
 test-input.o: test-input.c
