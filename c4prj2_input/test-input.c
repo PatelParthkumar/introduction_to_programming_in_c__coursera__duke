@@ -40,7 +40,8 @@ int main() {
   future_cards_t * fc = malloc(sizeof(*fc));
   fc->n_decks = 0;
   fc->decks = NULL;
-  
+
+  printf("Reading hands in file\n");
   deck_t ** decks = read_input(f, &n_hands, fc);
 
   for (size_t ih = 0; ih < n_hands; ih++) {
@@ -54,7 +55,7 @@ int main() {
   //============== test the wildcards ======================
   printf("%d hands read\n", (int)n_hands);
 
-  deck_t * d = decks[1];
+  deck_t * d = decks[2];
 
   deck_t * stack = make_deck_exclude(d);
 

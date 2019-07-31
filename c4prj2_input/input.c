@@ -1,35 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "input.h"
 
-deck_t * hand_from_string(const char * str, future_cards_t * fc) {
+void proc_valid_card(char * token, deck_t * d) {
+  card_t c = card_from_letters(token[0], token[1]);
+  add_card_to(d, c);
+}
 
-  // initialize variable deck_t deck
+void proc_wildcard(char * token, deck_t * d, future_cards_t * fc) {
+  int index = atoi(&token[1]);
+  add_empty_card(d);
+  add_future_card(fc, (size_t)index, d->cards[d->n_cards-1]);
+}
+
+void proc_token(char * token, deck_t * d, future_cards_t *  fc) {
+  if (token[0] == '?') {
+    proc_wildcard(token, d, fc);
+  }
+  else {
+    proc_valid_card(token, d);
+  }
+}
+
+
+deck_t * hand_from_string(const char * str, future_cards_t * fc) {
   deck_t * d = malloc(sizeof(*d));
   d->n_cards = 0;
   d->cards = NULL;
 
-  // split the string
-  int i = 0;
-  char c_str[3] = "xx";
-  while (str[i] != '\0') {
-    // loop 2 characters which are a card
-    for (int j = 0; j < 2; j++) {
-      c_str[j] = str[i+j];
-    }
+  char * str_ = malloc((strlen(str) + 1)*sizeof(*str_));
+  strcpy(str_, str);
+  //printf("original string: %s\n", str);
+  //printf("copied string: %s\n", str_);
 
-    // check if chard is future card
-    if (c_str[0] == '?') {
-      add_empty_card(d);
-      size_t index = (size_t)(c_str[1] - '0');
-      add_future_card(fc, index, d->cards[d->n_cards-1]);
-    }
-    else {
-      card_t c = card_from_letters(c_str[0], c_str[1]);
-      add_card_to(d, c);
-    }
-    i += 3;
-  }
+  // loop the string and until a point
+  const char delim[2] = " ";
+  size_t icard = 0;
+  size_t index = 0;
+  char * token = strtok(str_, " ");
+
+  //  printf("  token: %s\n", token);
+
+   while (token != NULL) {
+    // check token
+    proc_token(token, d, fc);
+    token = strtok(NULL, " ");
+    //    printf("  token: %s\n", token);
+  }  // loop until token is NULL pointer
+
   return d;
 }
 

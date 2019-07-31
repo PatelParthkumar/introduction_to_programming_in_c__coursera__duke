@@ -1,4 +1,4 @@
-CLFAGS = -Wall -Werror -pedantic -std=gnu99
+CLFAGS = -Wall -pedantic -std=gnu99 -Werror
 test-input: test-input.o input.o deck.o cards.o eval.o future.o
 	gcc -o test-input test-input.o input.o cards.o eval.o future.o deck.o
 %.o: %.c
