@@ -3,12 +3,14 @@
 #include <string.h>
 #include "input.h"
 
-void proc_valid_card(char * token, deck_t * d) {
+void proc_valid_card_token(char * token, deck_t * d) {
+  // process valid card in format 'vs' (2 characters in string, 3 in token (NULL terminator)
   card_t c = card_from_letters(token[0], token[1]);
   add_card_to(d, c);
 }
 
-void proc_wildcard(char * token, deck_t * d, future_cards_t * fc) {
+void proc_wildcard_token(char * token, deck_t * d, future_cards_t * fc) {
+  // process anything with format '?xxx', the number of x's is undefined
   int index = atoi(&token[1]);
   add_empty_card(d);
   add_future_card(fc, (size_t)index, d->cards[d->n_cards-1]);
@@ -16,34 +18,31 @@ void proc_wildcard(char * token, deck_t * d, future_cards_t * fc) {
 
 void proc_token(char * token, deck_t * d, future_cards_t *  fc) {
   if (token[0] == '?') {
-    proc_wildcard(token, d, fc);
+    proc_wildcard_token(token, d, fc);
   }
   else {
-    proc_valid_card(token, d);
+    proc_valid_card_token(token, d);
   }
 }
 
 
 deck_t * hand_from_string(const char * str, future_cards_t * fc) {
+  // init deck pointer
   deck_t * d = malloc(sizeof(*d));
   d->n_cards = 0;
   d->cards = NULL;
 
+  // need copy, since str is const
   char * str_ = malloc((strlen(str) + 1)*sizeof(*str_));
   strcpy(str_, str);
-  //printf("original string: %s\n", str);
-  //printf("copied string: %s\n", str_);
 
-  // loop the string and until a point
+  // pick first token and create static pointer (inside strtok)
   char * token = strtok(str_, " ");
 
-  //  printf("  token: %s\n", token);
-
-   while (token != NULL) {
-    // check token
+  // check for other tokens, there should be at least one more
+  while (token != NULL) {
     proc_token(token, d, fc);
     token = strtok(NULL, " ");
-    //    printf("  token: %s\n", token);
   }  // loop until token is NULL pointer
 
   return d;
@@ -57,7 +56,6 @@ deck_t ** read_input(FILE * f, size_t * n_hands, future_cards_t * fc) {
   int len = 0;
   while ((len = getline(&line, &sz, f)) >= 0) {
     line[len-1] = '\0';
-    //    printf("hand %d: '%s'\n", (int)*n_hands, line);
 
     // check 5 card requirement
     if (len < 14) {
