@@ -21,7 +21,7 @@ void print_fc(future_cards_t * fc) {
   for (size_t i = 0; i < fc->n_decks; ++i) {
     printf("  deck %d contains %d placeholders\n", (int)i, (int)(fc->decks[i].n_cards));
     for (size_t j = 0; j < fc->decks[i].n_cards; ++j) {
-      printf("    %p: ", fc->decks[i].cards[j]);
+      printf("    %p: ", (void*)fc->decks[i].cards[j]);
       print_card(*fc->decks[i].cards[j]);
     }
     printf("\n");

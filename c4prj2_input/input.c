@@ -35,9 +35,6 @@ deck_t * hand_from_string(const char * str, future_cards_t * fc) {
   //printf("copied string: %s\n", str_);
 
   // loop the string and until a point
-  const char delim[2] = " ";
-  size_t icard = 0;
-  size_t index = 0;
   char * token = strtok(str_, " ");
 
   //  printf("  token: %s\n", token);
