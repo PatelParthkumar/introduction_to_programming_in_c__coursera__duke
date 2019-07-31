@@ -45,6 +45,8 @@ deck_t * hand_from_string(const char * str, future_cards_t * fc) {
     token = strtok(NULL, " ");
   }  // loop until token is NULL pointer
 
+  free(str_);
+  
   return d;
 }
 
@@ -70,5 +72,8 @@ deck_t ** read_input(FILE * f, size_t * n_hands, future_cards_t * fc) {
 
     (*n_hands)++;
   } // loop all lines
+
+  free(line);
+  
   return decks;
 }

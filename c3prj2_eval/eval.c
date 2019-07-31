@@ -252,7 +252,6 @@ unsigned * get_match_counts(deck_t * hand){
   for (size_t i = 0; i < nc; i++) {
     array[i] = 0;
     val = hand->cards[i]->value;
-    printf("value: %d\n", val);
     for (size_t j = 0; j < nc; j++) {
       if (val == hand->cards[j]->value) {
 	array[i] = array[i] + 1;
