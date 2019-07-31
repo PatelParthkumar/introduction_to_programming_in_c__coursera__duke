@@ -28,13 +28,16 @@ void add_future_card(future_cards_t * fc, size_t index, card_t * ptr) {
 
 void future_cards_from_deck(deck_t * deck, future_cards_t * fc) {
 
-  for (size_t i = 0; i < fc->n_decks; i++) {
+  for (size_t i = 0; i < fc->n_decks; ++i) {
+    //    printf("future card %d: ", (int)i);
     // which card_t* to take
-    card_t * c = deck->cards[i];
-    deck_t d = fc->decks[i];
+    //    card_t * c = deck->cards[i];
+    //    deck_t d = fc->decks[i];
+    //    print_card(*(deck->cards[i]));
+    //printf("\n");
     // get pointer for this placeholder
-    for (size_t j = 0; i < d.n_cards; ++i) {
-      *d.cards[j] = *c;
+    for (size_t j = 0; j < fc->decks[i].n_cards; ++j) {
+      *(fc->decks[i].cards[j]) = *(deck->cards[i]);
     }  // loop all placeholders for this card
   }  // loop all placeholders
   
